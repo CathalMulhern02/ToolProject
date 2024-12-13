@@ -3,15 +3,17 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function EditTool() {
-  let { id } = useParams();
+  let { id } = useParams(); // Get the tool ID from the URL parameter
 
+  // State hooks for tool properties
   const [name, setName] = useState('');
   const [state, setState] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
 
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Navigate to another page after submission
 
+  // Fetch tool data when the component loads
   useEffect(() => {
     axios.get('http://localhost:4000/api/tool/' + id)
       .then((response) => {
@@ -20,20 +22,19 @@ export default function EditTool() {
         setPrice(response.data.price);
         setImage(response.data.image);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
   }, [id]); 
 
+  // Handle form submission to update the tool
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const updatedTool = { id, name, state, price, image };
+    const updatedTool = { id, name, state, price, image }; // Construct updated tool object
 
     axios.put('http://localhost:4000/api/tool/' + id, updatedTool)
       .then((res) => {
         console.log(res.data);
-        navigate('/readtool');
+        navigate('/readtool'); // Redirect to "View Tools" page
       });
   }
 
@@ -45,7 +46,7 @@ export default function EditTool() {
         className="p-4 shadow rounded" 
         style={{ backgroundColor: "#f8f9fa" }}
       >
-        {/* Tool Name */}
+        {/* Tool Name Input */}
         <div className="form-group mb-3">
           <label className="form-label">Tool Name:</label>
           <input 
@@ -58,7 +59,7 @@ export default function EditTool() {
           />
         </div>
 
-        {/* Tool State */}
+        {/* Tool State Dropdown */}
         <div className="form-group mb-3">
           <label className="form-label">Tool State:</label>
           <select 
@@ -74,7 +75,7 @@ export default function EditTool() {
           </select>
         </div>
 
-        {/* Tool Price */}
+        {/* Tool Price Input */}
         <div className="form-group mb-3">
           <label className="form-label">Tool Price:</label>
           <input 
@@ -88,7 +89,7 @@ export default function EditTool() {
           />
         </div>
 
-        {/* Tool Image URL */}
+        {/* Tool Image URL Input */}
         <div className="form-group mb-4">
           <label className="form-label">Tool Image URL:</label>
           <input 
