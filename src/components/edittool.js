@@ -1,10 +1,8 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 
-export default function EditTool(props) {
+export default function EditTool() {
   let { id } = useParams();
 
   const [name, setName] = useState('');
@@ -19,8 +17,8 @@ export default function EditTool(props) {
       .then((response) => {
         setName(response.data.name);
         setState(response.data.state);
-        setImage(response.data.image);
         setPrice(response.data.price);
+        setImage(response.data.image);
       })
       .catch((error) => {
         console.log(error);
@@ -30,9 +28,9 @@ export default function EditTool(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const newTool = { id, name, state, price, image};
+    const updatedTool = { id, name, state, price, image };
 
-    axios.put('http://localhost:4000/api/tool/' + id, newTool)
+    axios.put('http://localhost:4000/api/tool/' + id, updatedTool)
       .then((res) => {
         console.log(res.data);
         navigate('/readtool');
@@ -40,47 +38,75 @@ export default function EditTool(props) {
   }
 
   return (
-    <div>
-        <h3>Hello from create component!</h3>
-        <form onSubmit={handleSubmit}>
-            <div className="form-group">
-                <label>Add Tool Name: </label>
-                <input type="text"
-                    className="form-control"
-                    value={name}
-                    onChange={(e) => { setName(e.target.value) }}
-                />
-            </div>
-            <div className="form-group">
-                <label>Add Tool State: </label>
-                <input type="text"
-                    className="form-control"
-                    value={state}
-                    onChange={(e) => { setState(e.target.value) }}
-                />
-            </div>
-            <div className="form-group">
-                <label>Add Tool Price: </label>
-                <input type="text"
-                    className="form-control"
-                    value={price}
-                    onChange={(e) => { setPrice(e.target.value) }}
-                />
+    <div className="container mt-5">
+      <h2 className="text-center mb-4">Edit Tool</h2>
+      <form 
+        onSubmit={handleSubmit} 
+        className="p-4 shadow rounded" 
+        style={{ backgroundColor: "#f8f9fa" }}
+      >
+        {/* Tool Name */}
+        <div className="form-group mb-3">
+          <label className="form-label">Tool Name:</label>
+          <input 
+            type="text"
+            className="form-control"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter tool name"
+            required
+          />
+        </div>
 
+        {/* Tool State */}
+        <div className="form-group mb-3">
+          <label className="form-label">Tool State:</label>
+          <select 
+            className="form-control"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            required
+          >
+            <option value="">Select tool state</option>
+            <option value="In use">In use</option>
+            <option value="Broken">Broken</option>
+            <option value="In van">In van</option>
+          </select>
+        </div>
 
-            </div>
-            <div className="form-group">
-                <label>Add Tool image: </label>
-                <input type="text"
-                    className="form-control"
-                    value={image}
-                    onChange={(e) => { setImage(e.target.value) }}
-                />
-            </div>
-            <div>
-                <input type="submit" value="Edit Tool"></input>
-            </div>
-        </form>
+        {/* Tool Price */}
+        <div className="form-group mb-3">
+          <label className="form-label">Tool Price:</label>
+          <input 
+            type="number"
+            className="form-control"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            min="0"
+            placeholder="Enter price"
+            required
+          />
+        </div>
+
+        {/* Tool Image URL */}
+        <div className="form-group mb-4">
+          <label className="form-label">Tool Image URL:</label>
+          <input 
+            type="text"
+            className="form-control"
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
+            placeholder="Enter image URL"
+          />
+        </div>
+
+        {/* Submit Button */}
+        <div className="text-center">
+          <button type="submit" className="btn btn-primary btn-lg w-100">
+            Update Tool
+          </button>
+        </div>
+      </form>
     </div>
-);
+  );
 }
