@@ -3,13 +3,13 @@
 
 
 ### Home Page
-![Home Page](docs/images/image1.png)
+![Home Page](docs/images/1.png)
 
 ### Add Tool Page
-![Add Tool Page](docs/images/image2.png)
+![Add Tool Page](docs/images/2.png)
 
 ### View Tools Page
-![View Tools Page](docs/images/image3.png)
+![View Tools Page](docs/images/3.png)
 
 
 
